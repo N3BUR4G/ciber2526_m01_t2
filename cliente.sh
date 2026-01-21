@@ -2,7 +2,7 @@
 
 AUDIO_FILE="audio.wav"
 
-VERSION_CURRENT="0.8"
+VERSION_CURRENT="0.9"
 
 PORT="9999"
 IP_SERVER="localhost"
@@ -84,7 +84,13 @@ echo "18. LISTEN"
 
 RESPONSE=`nc -l -p $PORT`
 
-
+if [ "$RESPONSE" == "OK" ]
+then
+	echo "Archivo verificado correctamente."
+else
+    echo "ERROR: Archivo corrupto según servidor."
+fi
+		
 
 
 

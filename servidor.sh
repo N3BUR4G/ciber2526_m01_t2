@@ -1,6 +1,6 @@
-#/bin/bash
+#!/bin/bash
 
-VERSION_CURRENT="0.8"
+VERSION_CURRENT="0.9"
 
 PORT="9999"
 IP_CLIENT="localhost"
@@ -137,8 +137,17 @@ echo "FILE_DATA_OK" | nc $IP_CLIENT -q 0 $PORT
 echo "15. LISTEN. FILE_DATA_HASH"
 
 DATA=`nc -l -p $PORT`
+RECIVED_HASH=`echo $DATA | cut -d " " -f 2`
+CALCULATED_HASH=`md5sum $SERVER_DIR/$FILE_NAME | cut -d " " -f 1`
 
-
+if [ "$RECIVED_HASH" == "$CALCULATED_HASH" ]
+	then
+		echo "OK" | nc $IP_CLIENT -q 0 $PORT
+    echo "Hashes coinciden. Archivo recibido correctamente."
+else
+    echo "KO" | nc $IP_CLIENT -q 0 $PORT
+    echo "ERROR: Hashes no coinciden. Archivo corrupto."
+fi
 
 echo "Fin de comunicación"
 
